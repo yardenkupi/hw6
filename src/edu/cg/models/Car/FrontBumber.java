@@ -52,6 +52,7 @@ public class FrontBumber implements IRenderable {
 		Materials.SetRedMetalMaterial(gl);
 		glu.gluSphere(q, 0.35*Specification.F_BUMPER_WINGS_DEPTH, 	36, 18);
 		gl.glPopMatrix();
+
 	}
 
 	@Override
