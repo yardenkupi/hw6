@@ -70,7 +70,6 @@ public class NeedForSpeed implements GLEventListener {
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		// TODO: This is the flow in which we render the scene.
 		// Step (1) Update the accumulated translation that needs to be
 		// applied on the car, camera and light sources.
 		updateCarCameraTranslation(gl);
@@ -171,7 +170,7 @@ public class NeedForSpeed implements GLEventListener {
 		// * Remember: the car was modeled locally, you may need to rotate/scale and translate the car appropriately.
 		// * Recommendation: it is recommended to define fields (such as car initial position) that can be used during rendering.
 		gl.glPushMatrix();
-		gl.glTranslated(this.carCameraTranslation.x,this.carCameraTranslation.y,this.carCameraTranslation.z);
+		gl.glTranslated(this.carCameraTranslation.x,0.15 + this.carCameraTranslation.y, -7.0 + this.carCameraTranslation.z);
 		gl.glRotated(90,0,1,0);
 		gl.glRotated(-this.gameState.getCarRotation(),0,1,0);
 
