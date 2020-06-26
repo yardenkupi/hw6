@@ -21,6 +21,5 @@ public class BoundingSphereTree {
 	public void setList(LinkedList<BoundingSphereTree> list) {
 		this.list = list;
 	}
-	
 
 }

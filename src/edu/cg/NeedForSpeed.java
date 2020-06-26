@@ -17,7 +17,7 @@ import edu.cg.models.Track;
 import edu.cg.models.TrackSegment;
 import edu.cg.models.Car.F1Car;
 import edu.cg.models.Car.Specification;
-
+import edu.cg.algebra.Point;
 /**
  * An OpenGL 3D Game.
  *
@@ -34,6 +34,8 @@ public class NeedForSpeed implements GLEventListener {
 	private boolean isDayMode = true; // Indicates whether the lighting mode is day/night.
 	private boolean isBirdseyeView = false; // Indicates whether the camera is looking from above on the scene or
 											// looking
+	private Point cameraInitialPositionThirdPerson;
+	private Point cameraInitialPositionBirdsEye;
 	// towards the car direction.
 	// TODO: add fields as you want. For example:
 	// - Car initial position (should be fixed).
@@ -48,6 +50,8 @@ public class NeedForSpeed implements GLEventListener {
 		gameTrack = new Track();
 		carCameraTranslation = new Vec(0.0);
 		car = new F1Car();
+		cameraInitialPositionThirdPerson = new Point(0,2,4);
+		cameraInitialPositionBirdsEye = new Point(0,50,22);
 	}
 
 	@Override
@@ -57,10 +61,11 @@ public class NeedForSpeed implements GLEventListener {
 			initModel(gl);
 		}
 		if (isDayMode) {
-			// TODO: Setup background when day mode is on
 			// use gl.glClearColor() function.
+			gl.glClearColor(0.52f,0.85f,1,0);
+
 		} else {
-			// TODO: Setup background when night mode is on
+			gl.glClearColor(0,0,0.4f,0);
 		}
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -113,27 +118,42 @@ public class NeedForSpeed implements GLEventListener {
 
 	private void setupCamera(GL2 gl) {
 		// TODO: You are advised to use :
-		//       GLU glu = new GLU();
-		//       glu.gluLookAt();
+			 GLU glu = new GLU();
+
 		if (isBirdseyeView) {
 			// TODO Setup camera for Birds-eye view
+			glu.gluLookAt(cameraInitialPositionBirdsEye.x+this.carCameraTranslation.x,cameraInitialPositionBirdsEye.y+this.carCameraTranslation.y,cameraInitialPositionBirdsEye.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z, 0,-1,0);
 		} else {
 			// TODO Setup camera for Third-person view
+			glu.gluLookAt(cameraInitialPositionThirdPerson.x+this.carCameraTranslation.x,cameraInitialPositionThirdPerson.y+this.carCameraTranslation.y,cameraInitialPositionThirdPerson.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z,0,0,-1);
 		}
 
 	}
 
 	private void setupLights(GL2 gl) {
-		if (isDayMode) {
-			// TODO Setup day lighting.
-			// * Remember: switch-off any light sources that were used in night mode and are not use in day mode.
+		if (this.isDayMode) {
+			gl.glDisable(GL2.GL_LIGHT1);
+			Vec dir = new Vec(0.0, 1.0, 1.0).normalize();
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE,new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{dir.x, dir.y, dir.z, 0.0f}, 0);
+			gl.glEnable(GL2.GL_LIGHT0);
 		} else {
-			// TODO Setup night lighting.
-			// * Remember: switch-off any light sources that are used in day mode
-			// * Remember: spotlight sources also move with the camera.
-			// * You may simulate moon-light using ambient light.
+			gl.glDisable(GL2.GL_LIGHT0);
+			gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, new float[]{0.2f, 0.2f, 0.2f, 1.0f}, 0);
+			float[] position1 = {this.carCameraTranslation.x, this.carCameraTranslation.y + 7.0f, this.carCameraTranslation.z, 1.0f};
+			this.spotLight(gl, GL2.GL_LIGHT0, position1);
+			float[] position2 = {this.carCameraTranslation.x, this.carCameraTranslation.y + 7.0f, this.carCameraTranslation.z - 10.0f, 1.0f};
+			this.spotLight(gl, GL2.GL_LIGHT1, position2);
 		}
-
+	}
+	private void spotLight(GL2 gl, int light, float[] position) {
+		gl.glLightfv(light, GL2.GL_DIFFUSE, new float[]{0.5f, 0.5f, 0.5f, 1.0f}, 0);
+		gl.glLightfv(light, GL2.GL_SPECULAR, new float[]{0.5f, 0.5f, 0.5f, 1.0f}, 0);
+		gl.glLightfv(light, GL2.GL_SPOT_DIRECTION, new float[]{0.0f, -1.0f, 0.0f}, 0);
+		gl.glLightfv(light, GL2.GL_POSITION, position, 0);
+		gl.glLightf(light, GL2.GL_SPOT_CUTOFF, 80.0f);
+		gl.glEnable(light);
 	}
 
 	private void renderTrack(GL2 gl) {
@@ -149,6 +169,13 @@ public class NeedForSpeed implements GLEventListener {
 		//             This will simulate the car movement.
 		// * Remember: the car was modeled locally, you may need to rotate/scale and translate the car appropriately.
 		// * Recommendation: it is recommended to define fields (such as car initial position) that can be used during rendering.
+		gl.glPushMatrix();
+		gl.glTranslated(this.carCameraTranslation.x,this.carCameraTranslation.y,this.carCameraTranslation.z);
+		gl.glRotated(90,0,1,0);
+		gl.glRotated(-this.gameState.getCarRotation(),0,1,0);
+
+		car.render(gl);
+		gl.glPopMatrix();
 	}
 
 	public GameState getGameState() {
