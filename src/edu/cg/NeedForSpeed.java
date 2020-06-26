@@ -125,6 +125,7 @@ public class NeedForSpeed implements GLEventListener {
 			glu.gluLookAt(cameraInitialPositionBirdsEye.x+this.carCameraTranslation.x,cameraInitialPositionBirdsEye.y+this.carCameraTranslation.y,cameraInitialPositionBirdsEye.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z, 0,-1,0);
 		} else {
 			// TODO Setup camera for Third-person view
+
 			glu.gluLookAt(cameraInitialPositionThirdPerson.x+this.carCameraTranslation.x,cameraInitialPositionThirdPerson.y+this.carCameraTranslation.y,cameraInitialPositionThirdPerson.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z,0,0,-1);
 		}
 
