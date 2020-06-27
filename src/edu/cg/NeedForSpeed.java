@@ -129,13 +129,13 @@ public class NeedForSpeed implements GLEventListener {
 		if (this.isDayMode) {
 			gl.glDisable(GL2.GL_LIGHT1);
 			gl.glDisable(GL2.GL_LIGHT2);
-
 			Vec dir = new Vec(0.0, 1.0, 1.0).normalize();
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT,new float[]{0f, 0f, 0f, 0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE,new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{dir.x, dir.y, dir.z, 0.0f}, 0);
 			gl.glEnable(GL2.GL_LIGHT0);
+
 		} else {
 			gl.glDisable(GL2.GL_LIGHT0);
 			gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, new float[]{0.2f, 0.2f, 0.2f, 1.0f}, 0);
