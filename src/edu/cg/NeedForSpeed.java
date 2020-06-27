@@ -65,6 +65,7 @@ public class NeedForSpeed implements GLEventListener {
 			gl.glClearColor(0.52f,0.85f,1,0);
 
 		} else {
+
 			gl.glClearColor(0,0,0.4f,0);
 		}
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
@@ -116,64 +117,62 @@ public class NeedForSpeed implements GLEventListener {
 	}
 
 	private void setupCamera(GL2 gl) {
-		// TODO: You are advised to use :
 			 GLU glu = new GLU();
-
 		if (isBirdseyeView) {
-			// TODO Setup camera for Birds-eye view
-			glu.gluLookAt(cameraInitialPositionBirdsEye.x+this.carCameraTranslation.x,cameraInitialPositionBirdsEye.y+this.carCameraTranslation.y,cameraInitialPositionBirdsEye.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z, 0,-1,0);
+			glu.gluLookAt(this.carCameraTranslation.x,this.carCameraTranslation.y+50,(this.carCameraTranslation.z)-39, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z-39, 0,0,-1);
 		} else {
-			// TODO Setup camera for Third-person view
-
-			glu.gluLookAt(cameraInitialPositionThirdPerson.x+this.carCameraTranslation.x,cameraInitialPositionThirdPerson.y+this.carCameraTranslation.y,cameraInitialPositionThirdPerson.z+this.carCameraTranslation.z, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z,0,0,-1);
+			glu.gluLookAt(this.carCameraTranslation.x,2.0+ this.carCameraTranslation.y, 4 + this.carCameraTranslation.z, this.carCameraTranslation.x,this.carCameraTranslation.y-2, this.carCameraTranslation.z-10.0,0,1,0);
 		}
-
 	}
 
 	private void setupLights(GL2 gl) {
 		if (this.isDayMode) {
 			gl.glDisable(GL2.GL_LIGHT1);
+			gl.glDisable(GL2.GL_LIGHT2);
 			Vec dir = new Vec(0.0, 1.0, 1.0).normalize();
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT,new float[]{0f, 0f, 0f, 0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE,new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 0);
 			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{dir.x, dir.y, dir.z, 0.0f}, 0);
 			gl.glEnable(GL2.GL_LIGHT0);
+
 		} else {
 			gl.glDisable(GL2.GL_LIGHT0);
 			gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, new float[]{0.2f, 0.2f, 0.2f, 1.0f}, 0);
-			float[] position1 = {this.carCameraTranslation.x, this.carCameraTranslation.y + 7.0f, this.carCameraTranslation.z, 1.0f};
-			this.spotLight(gl, GL2.GL_LIGHT0, position1);
-			float[] position2 = {this.carCameraTranslation.x, this.carCameraTranslation.y + 7.0f, this.carCameraTranslation.z - 10.0f, 1.0f};
+			float[] position1 = {this.carCameraTranslation.x, this.carCameraTranslation.y + 1+ (float)Specification.TIRE_RADIUS, -6.5f+this.carCameraTranslation.z+(float)(Specification.F_BUMPER_DEPTH /2), 1.0f};
+			this.spotLight(gl, GL2.GL_LIGHT2, position1);
+			float[] position2 = {this.carCameraTranslation.x, this.carCameraTranslation.y +1 +(float)Specification.TIRE_RADIUS, -6.5f+this.carCameraTranslation.z - (float)(Specification.F_BUMPER_DEPTH /2), 1.0f};
 			this.spotLight(gl, GL2.GL_LIGHT1, position2);
 		}
 	}
+
 	private void spotLight(GL2 gl, int light, float[] position) {
 		gl.glLightfv(light, GL2.GL_DIFFUSE, new float[]{0.5f, 0.5f, 0.5f, 1.0f}, 0);
 		gl.glLightfv(light, GL2.GL_SPECULAR, new float[]{0.5f, 0.5f, 0.5f, 1.0f}, 0);
-		gl.glLightfv(light, GL2.GL_SPOT_DIRECTION, new float[]{0.0f, -1.0f, 0.0f}, 0);
+		gl.glLightfv(light, GL2.GL_SPOT_DIRECTION, new float[]{((float)Math.sin(this.gameState.getCarRotation())), 0f, -(float)Math.cos((this.gameState.getCarRotation()))}, 0);
 		gl.glLightfv(light, GL2.GL_POSITION, position, 0);
-		gl.glLightf(light, GL2.GL_SPOT_CUTOFF, 80.0f);
+		gl.glLightf(light, GL2.GL_SPOT_CUTOFF, 90.0f);
 		gl.glEnable(light);
 	}
 
 	private void renderTrack(GL2 gl) {
 		// * Note: the track is not translated. It should be fixed.
 		gl.glPushMatrix();
+		gl.glTranslated(0,0,100);
 		gameTrack.render(gl);
 		gl.glPopMatrix();
 	}
 
 	private void renderCar(GL2 gl) {
-		// TODO: Render the car.
 		// * Remember: the car position should be the initial position + the accumulated translation.
 		//             This will simulate the car movement.
 		// * Remember: the car was modeled locally, you may need to rotate/scale and translate the car appropriately.
 		// * Recommendation: it is recommended to define fields (such as car initial position) that can be used during rendering.
 		gl.glPushMatrix();
-		gl.glTranslated(this.carCameraTranslation.x,0.15 + this.carCameraTranslation.y, -7.0 + this.carCameraTranslation.z);
+		gl.glTranslated(this.carCameraTranslation.x,0.2 + this.carCameraTranslation.y, -1+ this.carCameraTranslation.z);
+		gl.glScaled(4,4,4);
 		gl.glRotated(90,0,1,0);
 		gl.glRotated(-this.gameState.getCarRotation(),0,1,0);
-
 		car.render(gl);
 		gl.glPopMatrix();
 	}
@@ -215,7 +214,17 @@ public class NeedForSpeed implements GLEventListener {
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		// TODO Setup the projection matrix here.
+		GLU glu = new GLU();
+		double ratio = (double) width / (double) height;
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
+		if(isBirdseyeView){
+			glu.gluPerspective(45.0, ratio, 2.0, 26.0);
+		}else{
+			glu.gluPerspective(80.0, ratio, 2.0, 1000.0);
+
+		}
 	}
 
 	/**
