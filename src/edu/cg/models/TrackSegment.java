@@ -176,6 +176,7 @@ public class TrackSegment implements IRenderable, IIntersectable {
 		// TODO Auto-generated method stub
 		//TODO
 		// Return bounding spheres of the wooden boxes.
+
 		BoundingSphereTree trackSegmantTree = new BoundingSphereTree();
 		LinkedList<BoundingSphereTree> res = new LinkedList<BoundingSphereTree>();
 		for (Point p : boxesLocations) {
