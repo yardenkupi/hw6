@@ -13,6 +13,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 import edu.cg.algebra.Vec;
 import edu.cg.models.BoundingSphere;
+import edu.cg.models.BoundingSphereTree;
 import edu.cg.models.Track;
 import edu.cg.models.TrackSegment;
 import edu.cg.models.Car.F1Car;
@@ -37,7 +38,6 @@ public class NeedForSpeed implements GLEventListener {
 	private Point cameraInitialPositionThirdPerson;
 	private Point cameraInitialPositionBirdsEye;
 	// towards the car direction.
-	// TODO: add fields as you want. For example:
 	// - Car initial position (should be fixed).
 	// - Camera initial position (should be fixed)
 	// - Different camera settings
@@ -97,7 +97,7 @@ public class NeedForSpeed implements GLEventListener {
 	private boolean checkCollision() {
 		// TODO: Implement this function to check if the car collides into one of the boxes.
 		// You can get the bounding spheres of the track by invoking: 
-		// List<BoundingSphere> trackBoundingSpheres = gameTrack.getBoundingSpheres();
+//		 List<BoundingSphereTree> trackBoundingSpheres = gameTrack.getBoundingSpheres();
 		return false;
 	}
 
@@ -223,7 +223,6 @@ public class NeedForSpeed implements GLEventListener {
 			glu.gluPerspective(45.0, ratio, 2.0, 26.0);
 		}else{
 			glu.gluPerspective(80.0, ratio, 2.0, 1000.0);
-
 		}
 	}
 
