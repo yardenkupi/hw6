@@ -220,7 +220,7 @@ public class NeedForSpeed implements GLEventListener {
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		if(isBirdseyeView){
-			glu.gluPerspective(45.0, ratio, 2.0, 26.0);
+			glu.gluPerspective(60.0, ratio, 2.0, 26.0);
 		}else{
 			glu.gluPerspective(80.0, ratio, 2.0, 1000.0);
 		}
