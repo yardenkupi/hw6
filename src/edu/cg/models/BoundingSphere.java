@@ -33,10 +33,12 @@ public class BoundingSphere implements IRenderable {
 	 */
 	public boolean checkIntersection(BoundingSphere s) {
 		//create a vector from the two centres
-		Vec distanceOfCentres = new Vec(s.center.sub(this.center));
+//		Vec distanceOfCentres = new Vec(s.center.sub(this.center));
+		float checkDistSqr = this.center.distSqr(s.center);
+		float check = (float)(this.radius + s.radius);
 
 		//if the vector length is larger or equal to the sum of the two radiuses
-		return distanceOfCentres.lengthSqr() <= (this.radius + s.radius);
+		return this.center.distSqr(s.center) <= (float)(this.radius + s.radius);
 
 	}
 

@@ -88,7 +88,6 @@ public class NeedForSpeed implements GLEventListener {
 			this.gameState.resetGameState();
 			this.carCameraTranslation = new Vec(0.0);
 		}
-
 	}
 
 	/**
@@ -96,8 +95,26 @@ public class NeedForSpeed implements GLEventListener {
 	 */
 	private boolean checkCollision() {
 		// TODO: Implement this function to check if the car collides into one of the boxes.
-		// You can get the bounding spheres of the track by invoking: 
-//		 List<BoundingSphereTree> trackBoundingSpheres = gameTrack.getBoundingSpheres();
+		// You can get the bounding spheres of the track by invoking:
+
+		BoundingSphereTree trackCentralBoundingSphere = gameTrack.getBoundingSpheres(); // main bounding sphere of track
+		List<BoundingSphereTree> trackBoundingSpheres = trackCentralBoundingSphere.getList();	//list of other bounding spheres
+		BoundingSphereTree carCentralBoundingSphere = car.getBoundingSpheres();		//main bounding sphere of car
+		return checkTreeCollision(trackBoundingSpheres,carCentralBoundingSphere);
+	}
+
+	private boolean checkTreeCollision(List<BoundingSphereTree> trackBoundingSpheres ,BoundingSphereTree carBoundingSphere) {
+		List<BoundingSphereTree> carBoundingSpheres = carBoundingSphere.getList();
+		for (BoundingSphereTree trackBoundingSphere : trackBoundingSpheres) {
+			if (carBoundingSphere.getBoundingSphere().checkIntersection(trackBoundingSphere.getBoundingSphere())) {
+				return true;
+			}
+		}
+		for (BoundingSphereTree cBoundingSphere : carBoundingSpheres) {
+			if(checkTreeCollision(trackBoundingSpheres,cBoundingSphere) == true){
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -121,7 +138,7 @@ public class NeedForSpeed implements GLEventListener {
 		if (isBirdseyeView) {
 			glu.gluLookAt(this.carCameraTranslation.x,this.carCameraTranslation.y+50,(this.carCameraTranslation.z)-39, this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z-39, 0,0,-1);
 		} else {
-			glu.gluLookAt(this.carCameraTranslation.x,2.0+ this.carCameraTranslation.y, 4 + this.carCameraTranslation.z, this.carCameraTranslation.x,this.carCameraTranslation.y-2, this.carCameraTranslation.z-10.0,0,1,0);
+			glu.gluLookAt(this.carCameraTranslation.x,2.0+ this.carCameraTranslation.y, 4 + this.carCameraTranslation.z, this.carCameraTranslation.x,this.carCameraTranslation.y-2, this.carCameraTranslation.z-19.0,0,1,0);
 		}
 	}
 
@@ -201,7 +218,6 @@ public class NeedForSpeed implements GLEventListener {
 	public void initModel(GL2 gl) {
 		gl.glCullFace(GL2.GL_BACK);
 		gl.glEnable(GL2.GL_CULL_FACE);
-
 		gl.glEnable(GL2.GL_NORMALIZE);
 		gl.glEnable(GL2.GL_DEPTH_TEST);
 		gl.glEnable(GL2.GL_LIGHTING);
