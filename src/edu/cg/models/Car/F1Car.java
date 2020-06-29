@@ -44,17 +44,21 @@ public class F1Car implements IRenderable, IIntersectable {
 
 
 		carBack.getBoundingSpheres().getBoundingSphere().translateCenter(-0.51 * Specification.B_LENGTH -0.5 * Specification.C_LENGTH, 0.0, 0.0);
+		carBack.getBoundingSpheres().getBoundingSphere().setOriginalCenter(carBack.getBoundingSpheres().getBoundingSphere().getCenter());
 		if(carBack.getBoundingSpheres().getList() != null)	//initiallize location of inner spheres of back that are a subtree in it
 		{
 			for (BoundingSphereTree currBoundingSphereTree : carBack.getBoundingSpheres().getList()) {
-				currBoundingSphereTree.getBoundingSphere().translateCenter(-0.14 * Specification.B_LENGTH -0.1 * Specification.C_LENGTH, 0.0, 0.0);;
+				currBoundingSphereTree.getBoundingSphere().translateCenter(-0.14 * Specification.B_LENGTH -0.1 * Specification.C_LENGTH, 0.0, 0.0);
+				currBoundingSphereTree.getBoundingSphere().setOriginalCenter(currBoundingSphereTree.getBoundingSphere().getCenter());
 			}
 		}
 		carFront.getBoundingSpheres().getBoundingSphere().translateCenter((Specification.C_LENGTH * 0.5) + (Specification.F_LENGTH * 0.5), 0.0, 0.0);
+		carFront.getBoundingSpheres().getBoundingSphere().setOriginalCenter(carFront.getBoundingSpheres().getBoundingSphere().getCenter());
 		if(carFront.getBoundingSpheres().getList() != null) //initiallize location of inner spheres of front that are a subtree in it
 		{
 			for (BoundingSphereTree currBoundingSphereTree : carFront.getBoundingSpheres().getList()) {
-				currBoundingSphereTree.getBoundingSphere().translateCenter((Specification.C_LENGTH * 0.18) + (Specification.F_LENGTH * 0.1), 0.0, 0.0);;
+				currBoundingSphereTree.getBoundingSphere().translateCenter((Specification.C_LENGTH * 0.18) + (Specification.F_LENGTH * 0.1), 0.0, 0.0);
+				currBoundingSphereTree.getBoundingSphere().setOriginalCenter(currBoundingSphereTree.getBoundingSphere().getCenter());
 			}
 		}
 		LinkedList<BoundingSphereTree> list = new LinkedList<BoundingSphereTree>();

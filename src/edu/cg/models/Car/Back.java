@@ -32,6 +32,10 @@ public class Back implements IRenderable, IIntersectable {
 	public Back() {
 		wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().translateCenter(-Specification.B_LENGTH / 2.0 + Specification.TIRE_RADIUS, 0.5 * Specification.TIRE_RADIUS, 0.5 * Specification.B_DEPTH - 1.1 * Specification.TIRE_DEPTH);
 		wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().translateCenter(-Specification.B_LENGTH / 2.0 + Specification.TIRE_RADIUS, 0.5 * Specification.TIRE_RADIUS, -0.5 * Specification.B_DEPTH + 1.1 * Specification.TIRE_DEPTH);
+		
+		wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().setOriginalCenter(wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().getCenter());
+		wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().setOriginalCenter(wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().getCenter());
+
 	}
 	
 	@Override
