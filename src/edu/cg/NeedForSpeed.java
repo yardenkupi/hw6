@@ -103,18 +103,23 @@ public class NeedForSpeed implements GLEventListener {
 		return checkTreeCollision(trackBoundingSpheres,carCentralBoundingSphere);
 	}
 
+
 	private boolean checkTreeCollision(List<BoundingSphereTree> trackBoundingSpheres ,BoundingSphereTree carBoundingSphere) {
 		List<BoundingSphereTree> carBoundingSpheres = carBoundingSphere.getList();
 		for (BoundingSphereTree trackBoundingSphere : trackBoundingSpheres) {
 			if (carBoundingSphere.getBoundingSphere().checkIntersection(trackBoundingSphere.getBoundingSphere())) {
-				return true;
+				if(carBoundingSpheres == null || carBoundingSpheres.size() == 0)
+				{
+					return true;
+				}
+				for (BoundingSphereTree cBoundingSphere : carBoundingSpheres) {
+					if(checkTreeCollision(trackBoundingSpheres,cBoundingSphere)){
+						return true;
+					}
+				}
 			}
 		}
-		for (BoundingSphereTree cBoundingSphere : carBoundingSpheres) {
-			if(checkTreeCollision(trackBoundingSpheres,cBoundingSphere) == true){
-				return true;
-			}
-		}
+
 		return false;
 	}
 
@@ -175,8 +180,9 @@ public class NeedForSpeed implements GLEventListener {
 	private void renderTrack(GL2 gl) {
 		// * Note: the track is not translated. It should be fixed.
 		gl.glPushMatrix();
-		gl.glTranslated(0,0,100);
+		gl.glTranslated(0,0,10);
 		gameTrack.render(gl);
+		gl.glTranslated(0,0,-10);
 		gl.glPopMatrix();
 	}
 
@@ -192,6 +198,27 @@ public class NeedForSpeed implements GLEventListener {
 		gl.glRotated(-this.gameState.getCarRotation(),0,1,0);
 		car.render(gl);
 		gl.glPopMatrix();
+		translateSphereLocations();
+	}
+
+	private void translateSphereLocations() {
+		car.getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
+		car.getCarCenter().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
+
+		car.getCarBack().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
+		if(car.getCarBack().getBoundingSpheres().getList() != null)	//initiallize location of inner spheres of back that are a subtree in it
+		{
+			for (BoundingSphereTree currBoundingSphereTree : car.getCarBack().getBoundingSpheres().getList()) {
+				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));;
+			}
+		}
+		car.getCarFront().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));
+		if(car.getCarFront().getBoundingSpheres().getList() != null) //initiallize location of inner spheres of front that are a subtree in it
+		{
+			for (BoundingSphereTree currBoundingSphereTree : car.getCarFront().getBoundingSpheres().getList()) {
+				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
+			}
+		}
 	}
 
 	public GameState getGameState() {
@@ -200,6 +227,9 @@ public class NeedForSpeed implements GLEventListener {
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
+		GL2 gl = drawable.getGL().getGL2();
+		this.car.destroy(gl);
+		this.gameTrack.destroy(gl);
 	}
 
 	@Override

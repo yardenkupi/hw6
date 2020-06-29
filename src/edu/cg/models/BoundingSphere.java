@@ -35,10 +35,18 @@ public class BoundingSphere implements IRenderable {
 		//create a vector from the two centres
 //		Vec distanceOfCentres = new Vec(s.center.sub(this.center));
 		float checkDistSqr = this.center.distSqr(s.center);
-		float check = (float)(this.radius + s.radius);
+		float check = (float)((this.radius*4) + (s.radius));
+
+		if(this.center.z+100 < 1  && this.center.z != 0){
+			int test = 0;
+//			System.out.println(this.center.z);
+		}
+		if(Math.sqrt(checkDistSqr) <= check){
+			int f = 9;
+		}
 
 		//if the vector length is larger or equal to the sum of the two radiuses
-		return this.center.distSqr(s.center) <= (float)(this.radius + s.radius);
+		return Math.sqrt(checkDistSqr) <= (float)(this.radius * 4 + s.radius);
 
 	}
 
