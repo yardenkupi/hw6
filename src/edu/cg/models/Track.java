@@ -58,11 +58,6 @@ public class Track implements IRenderable, IIntersectable {
 	}
 
 
-	public List<BoundingSphere> getBoundingSpheres1() {
-		//TODO need to check
-		return currentTrackSegment.getBoundingSpheres1();
-	}
-
 	@Override
 	public BoundingSphereTree getBoundingSpheres() {
 		// TODO Auto-generated method stub

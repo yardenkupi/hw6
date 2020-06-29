@@ -15,9 +15,13 @@ import edu.cg.models.IRenderable;
  *
  */
 public class F1Car implements IRenderable, IIntersectable {
+
+
 	// Remember to include a ReadMe file specifying what you implemented.
 	Center carCenter = new Center();
-	
+
+
+
 	Back carBack = new Back();
 	Front carFront = new Front();
 	double radius = generateObjectRadius();
@@ -75,6 +79,16 @@ public class F1Car implements IRenderable, IIntersectable {
 		
 		
 	}
+	public Center getCarCenter() {
+		return carCenter;
+	}
+	public Back getCarBack() {
+		return carBack;
+	}
+	public Front getCarFront() {
+		return carFront;
+	}
+
 
 	@Override
 	public String toString() {
