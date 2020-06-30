@@ -100,35 +100,24 @@ public class NeedForSpeed implements GLEventListener {
 		BoundingSphereTree trackCentralBoundingSphere = gameTrack.getBoundingSpheres(); // main bounding sphere of track
 		List<BoundingSphereTree> trackBoundingSpheres = trackCentralBoundingSphere.getList();	//list of other bounding spheres
 		BoundingSphereTree carCentralBoundingSphere = car.getBoundingSpheres();		//main bounding sphere of car
-		if(checkRootCollision(trackBoundingSpheres,carCentralBoundingSphere)){
-			return checkTreeCollision(trackBoundingSpheres,carCentralBoundingSphere.getList());
-		}
-		return false;
+		return checkTreeCollision(trackBoundingSpheres,carCentralBoundingSphere);
 	}
 
-	private boolean checkRootCollision(List<BoundingSphereTree> trackBoundingSpheres ,BoundingSphereTree carBoundingSphere) {
+
+	private boolean checkTreeCollision(List<BoundingSphereTree> trackBoundingSpheres ,BoundingSphereTree carBoundingSphere) {
+		List<BoundingSphereTree> carBoundingSpheres = carBoundingSphere.getList();
 		for (BoundingSphereTree trackBoundingSphere : trackBoundingSpheres) {
 			if (carBoundingSphere.getBoundingSphere().checkIntersection(trackBoundingSphere.getBoundingSphere())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-	private boolean checkTreeCollision(List<BoundingSphereTree> trackBoundingSpheres ,List<BoundingSphereTree> carBoundingSpheres) {
-		for (BoundingSphereTree trackBoundingSphere : trackBoundingSpheres) {
-				if(carBoundingSpheres == null || carBoundingSpheres.size() == 0)
-				{
+				if(carBoundingSpheres == null || carBoundingSpheres.size() == 0) {
 					return true;
 				}
 				for (BoundingSphereTree cBoundingSphere : carBoundingSpheres) {
-					if(checkTreeCollision(trackBoundingSpheres,cBoundingSphere.getList())){
+					if(checkTreeCollision(trackBoundingSpheres,cBoundingSphere)){
 						return true;
 					}
 				}
 			}
-
+		}
 
 		return false;
 	}

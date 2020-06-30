@@ -32,41 +32,11 @@ public class BoundingSphere implements IRenderable {
 	 * @return true if the spheres intersects, and false otherwise
 	 */
 	public boolean checkIntersection(BoundingSphere s) {
+
 		//create a vector from the two centres
-<<<<<<< HEAD
-<<<<<<< HEAD
-		float checkCenterDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,14)));
-		float sumOfRadiuses = (float)((this.radius) + (s.radius));
-=======
-//		Vec distanceOfCentres = new Vec(s.center.sub(this.center));
-		float checkDistSqr = this.center.distSqr(s.center);
-		float check = (float)((this.radius*4) + (s.radius));
-=======
-//		Vec distanceOfCentres = new Vec(s.center.sub(this.center));
-		float checkDistSqr = this.center.distSqr(s.center);
-		float check = (float)((this.radius*4) + (s.radius));
+		float checkCenterDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,13.5)));
+		float sumOfRadiuses = (float)((this.radius*4) + (s.radius));
 
-		if(this.center.z+100 < 1  && this.center.z != 0){
-			int test = 0;
-//			System.out.println(this.center.z);
-		}
-		if(Math.sqrt(checkDistSqr) <= check){
-			int f = 9;
-		}
-
-		//if the vector length is larger or equal to the sum of the two radiuses
-		return Math.sqrt(checkDistSqr) <= (float)(this.radius * 4 + s.radius);
->>>>>>> parent of 46acc0a... Merge pull request #8 from yardenkupi/kupi
-
-		if(this.center.z+100 < 1  && this.center.z != 0){
-			int test = 0;
-//			System.out.println(this.center.z);
-		}
-		if(Math.sqrt(checkDistSqr) <= check){
-			int f = 9;
-		}
-
->>>>>>> parent of 46acc0a... Merge pull request #8 from yardenkupi/kupi
 		//if the vector length is larger or equal to the sum of the two radiuses
 		return Math.sqrt(checkCenterDistSqr ) <= sumOfRadiuses;
 	}
