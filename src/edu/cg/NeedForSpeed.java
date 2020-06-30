@@ -108,8 +108,7 @@ public class NeedForSpeed implements GLEventListener {
 		List<BoundingSphereTree> carBoundingSpheres = carBoundingSphere.getList();
 		for (BoundingSphereTree trackBoundingSphere : trackBoundingSpheres) {
 			if (carBoundingSphere.getBoundingSphere().checkIntersection(trackBoundingSphere.getBoundingSphere())) {
-				if(carBoundingSpheres == null || carBoundingSpheres.size() == 0)
-				{
+				if(carBoundingSpheres == null || carBoundingSpheres.size() == 0) {
 					return true;
 				}
 				for (BoundingSphereTree cBoundingSphere : carBoundingSpheres) {
@@ -182,7 +181,7 @@ public class NeedForSpeed implements GLEventListener {
 		gl.glPushMatrix();
 		gl.glTranslated(0,0,10);
 		gameTrack.render(gl);
-//		gl.glTranslated(0,0,-10);
+		gl.glTranslated(0,0,-10);
 		gl.glPopMatrix();
 	}
 
@@ -202,39 +201,24 @@ public class NeedForSpeed implements GLEventListener {
 	}
 
 	private void translateSphereLocations() {
-		translateSphereLocations(car.getBoundingSpheres());
-//		car.getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
-//		car.getCarCenter().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
-//
-//		car.getCarBack().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
-//		if(car.getCarBack().getBoundingSpheres().getList() != null)	//initiallize location of inner spheres of back that are a subtree in it
-//		{
-//			for (BoundingSphereTree currBoundingSphereTree : car.getCarBack().getBoundingSpheres().getList()) {
-//				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));;
-//			}
-//		}
-//		car.getCarFront().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));
-//		if(car.getCarFront().getBoundingSpheres().getList() != null) //initiallize location of inner spheres of front that are a subtree in it
-//		{
-//			for (BoundingSphereTree currBoundingSphereTree : car.getCarFront().getBoundingSpheres().getList()) {
-//				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
-//			}
-//		}
-	}
-	
-	private void translateSphereLocations(BoundingSphereTree tree)
-	{
-		if(tree != null)
+		car.getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
+		car.getCarCenter().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y,this.carCameraTranslation.z));
+
+		car.getCarBack().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
+		if(car.getCarBack().getBoundingSpheres().getList() != null)	//initiallize location of inner spheres of back that are a subtree in it
 		{
-			Point newCenter = new Point(this.carCameraTranslation.x + tree.getBoundingSphere().getOriginalCenter().z, this.carCameraTranslation.y + tree.getBoundingSphere().getOriginalCenter().y, this.carCameraTranslation.z - tree.getBoundingSphere().getOriginalCenter().x);
-			tree.getBoundingSphere().setCenter(newCenter);
+			for (BoundingSphereTree currBoundingSphereTree : car.getCarBack().getBoundingSpheres().getList()) {
+				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));;
+			}
 		}
-		for(BoundingSphereTree currTree : tree.getList())
+		car.getCarFront().getBoundingSpheres().getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x , this.carCameraTranslation.y, this.carCameraTranslation.z));
+		if(car.getCarFront().getBoundingSpheres().getList() != null) //initiallize location of inner spheres of front that are a subtree in it
 		{
-			translateSphereLocations(currTree);
+			for (BoundingSphereTree currBoundingSphereTree : car.getCarFront().getBoundingSpheres().getList()) {
+				currBoundingSphereTree.getBoundingSphere().setCenter(new Point(this.carCameraTranslation.x, this.carCameraTranslation.y, this.carCameraTranslation.z));
+			}
 		}
 	}
-	
 
 	public GameState getGameState() {
 		return gameState;

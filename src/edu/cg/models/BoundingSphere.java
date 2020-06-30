@@ -13,21 +13,11 @@ public class BoundingSphere implements IRenderable {
 	private double radius = 0.0;
 	private Point center;
 	private double color[];
-	private Point originalCenter;
-
-	public Point getOriginalCenter() {
-		return originalCenter;
-	}
-
-	public void setOriginalCenter(Point originalCenter) {
-		this.originalCenter = new Point(originalCenter.x, originalCenter.y, originalCenter.z) ;
-	}
 
 	public BoundingSphere(double radius, Point center) {
 		color = new double[3];
 		this.setRadius(radius);
 		this.setCenter(new Point(center.x, center.y, center.z));
-		this.setOriginalCenter(center);
 	}
 
 	public void setSphereColore3d(double r, double g, double b) {
@@ -42,12 +32,13 @@ public class BoundingSphere implements IRenderable {
 	 * @return true if the spheres intersects, and false otherwise
 	 */
 	public boolean checkIntersection(BoundingSphere s) {
-		//create a vector from the two centres
-		float checkDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,14)));
-		float check = (float)((this.radius*4) + (s.radius));
-		//if the vector length is larger or equal to the sum of the two radiuses
-		return Math.sqrt(checkDistSqr) <= (float)(this.radius * 4 + s.radius);
 
+		//create a vector from the two centres
+		float checkCenterDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,13.5)));
+		float sumOfRadiuses = (float)((this.radius*4) + (s.radius));
+
+		//if the vector length is larger or equal to the sum of the two radiuses
+		return Math.sqrt(checkCenterDistSqr ) <= sumOfRadiuses;
 	}
 
 
@@ -66,7 +57,6 @@ public class BoundingSphere implements IRenderable {
 
 	@Override
 	public void render(GL2 gl) {
-
 		//initilize gl object
 		gl.glPushMatrix();
 		GLU glu = new GLU();

@@ -27,10 +27,6 @@ public class Front implements IRenderable, IIntersectable {
 	public Front() {
 		wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().translateCenter(0.8 * Specification.TIRE_RADIUS, 0.5 * Specification.TIRE_RADIUS, 0.5 * Specification.B_DEPTH - 1.1 * Specification.TIRE_DEPTH);
 		wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().translateCenter(0.8 * Specification.TIRE_RADIUS, 0.5 * Specification.TIRE_RADIUS, -0.5 * Specification.B_DEPTH + 1.1 * Specification.TIRE_DEPTH);
-	
-	
-		wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().setOriginalCenter(wheels.getrWheel().getBoundingSphereTree().getBoundingSphere().getCenter());
-		wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().setOriginalCenter(wheels.getlWheel().getBoundingSphereTree().getBoundingSphere().getCenter());
 	}
 	
 	
