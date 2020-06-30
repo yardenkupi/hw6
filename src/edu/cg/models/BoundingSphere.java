@@ -43,11 +43,10 @@ public class BoundingSphere implements IRenderable {
 	 */
 	public boolean checkIntersection(BoundingSphere s) {
 		//create a vector from the two centres
-		float checkDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,14)));
-		float check = (float)((this.radius*4) + (s.radius));
+		float checkCenterDistSqr = this.center.distSqr(s.center.add(new Vec(0,0,14)));
+		float sumOfRadiuses = (float)((this.radius) + (s.radius));
 		//if the vector length is larger or equal to the sum of the two radiuses
-		return Math.sqrt(checkDistSqr) <= (float)(this.radius * 4 + s.radius);
-
+		return Math.sqrt(checkCenterDistSqr ) <= sumOfRadiuses;
 	}
 
 
@@ -66,7 +65,6 @@ public class BoundingSphere implements IRenderable {
 
 	@Override
 	public void render(GL2 gl) {
-
 		//initilize gl object
 		gl.glPushMatrix();
 		GLU glu = new GLU();
